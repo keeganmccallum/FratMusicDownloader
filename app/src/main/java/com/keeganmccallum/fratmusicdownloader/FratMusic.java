@@ -39,7 +39,8 @@ public class FratMusic {
     }
 
     public static JSONArray getPlaylists(int stationId) throws Exception {
-        return getRequest(PLAYLISTS_URL+"?stationId="+stationId).getJSONArray("playlists");
+        return getRequest(PLAYLISTS_URL+"?stationId="+stationId+"&playlistPerPage=10000")
+               .getJSONArray("playlists");
     }
 
     public static JSONArray getSongs(String playlistURL) throws Exception {
@@ -70,8 +71,8 @@ public class FratMusic {
     public static void downloadSong(Activity activity, String url, String playlistName, String filename) {
         DownloadManager dm = (DownloadManager) activity.getSystemService(Activity.DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        String path = "/Music/FratMusic/"+playlistName;
-        request.setDestinationInExternalPublicDir(path, filename + ".mp3");
+        String path = "/Music/FratMusic/"+ playlistName.replace("/", "|");
+        request.setDestinationInExternalPublicDir(path, filename.replace("/", "|") + ".mp3");
         dm.enqueue(request);
     }
 
